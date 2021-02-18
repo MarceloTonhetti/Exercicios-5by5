@@ -1,0 +1,7 @@
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\bin\Debug\excContaBancaria.exe.config
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\bin\Debug\excContaBancaria.exe
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\bin\Debug\excContaBancaria.pdb
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\obj\Debug\excContaBancaria.csprojAssemblyReference.cache
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\obj\Debug\excContaBancaria.csproj.CoreCompileInputs.cache
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\obj\Debug\excContaBancaria.exe
+C:\git\Exercicios-5by5\excContaBancaria\excContaBancaria\obj\Debug\excContaBancaria.pdb
