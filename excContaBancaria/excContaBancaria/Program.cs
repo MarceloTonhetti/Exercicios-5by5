@@ -15,7 +15,7 @@ namespace excContaBancaria
 				Cpf = "11111",
 				Name = "Marcelo",
 				address = new Address { PublicArea = "Rua Gilberto primeiro", Number = "222A", Neighborhood = "Bairro da turma", ZipCode = 1234567 },
-				account = new Account { Agency = 0009, Number = 919293, Balance = 10000 }
+				account = new Account { Agency = 21, Number = 1015, Balance = 500 }
 			};
 
 			Customer customer = new Customer { address = new Address(), account = new Account() };
@@ -29,20 +29,27 @@ namespace excContaBancaria
 				switch (op)
 				{
 					case 1:
+						Console.Clear();
 						RegisterCustomerAndAccount(customer);
 						break;
 					case 2:
-						MakeDeposit(customer);
+						MakeDeposit(customer, 0);
 						break;
 					case 3:
-						MakeWithdraw(customer);
+						MakeWithdraw(customer, 0);
+						break;
+					case 4:
+						Console.Clear();
+						BankTransfer(customer, baseCustomer);
 						break;
 					case 5:
+						Console.Clear();
 						PrintBalance(customer);
 						break;
 				}
 			} while (op != 0);
 
+			Console.Write("\nPressiione qualquer tecla para sair...");
 			Console.ReadKey();
 		}
 
@@ -65,7 +72,7 @@ namespace excContaBancaria
 
 		static void RegisterCustomerAndAccount(Customer customer)
 		{
-			Console.WriteLine("\nInserindo dados do cliente:");
+			Console.WriteLine(">>>Inserindo dados do cliente<<<");
 			Console.Write("Informe o Cpf: ");
 			string cpf = Console.ReadLine();
 			Console.Write("Informe o Nome: ");
@@ -112,37 +119,60 @@ namespace excContaBancaria
 			return false;
 		}
 
-		static void MakeDeposit(Customer customer)
+		static bool VerifyBalance(Customer customer, float value) 
+		{
+			float aux = customer.account.Balance - value;
+
+			if (customer.account.Balance < value || customer.account.Balance == 0 || aux < 0)
+			{
+				Console.WriteLine("Saldo insuficiente!!!");
+				return false;
+			}
+			return true;
+		}
+
+		static void MakeDeposit(Customer customer, float flag)
 		{
 			if (VerifyCustomer(customer))
 			{
-				Console.WriteLine("Qual o valor você deseja depositar?");
-				long value = long.Parse(Console.ReadLine());
+				if (flag == 0)
+				{
+					Console.WriteLine("Qual o valor você deseja depositar?");
+					float value = float.Parse(Console.ReadLine());
 
-				customer.account.Balance += value;
+					customer.account.Balance += value;
 
-				Console.Clear();
-				Console.WriteLine("Depósito realizado com sucesso!!!!");
+					Console.Clear();
+					Console.WriteLine("Depósito realizado com sucesso!!!!");
+				}
+				else if (flag > 0)
+					customer.account.Balance += flag;
+				
 			}
 
 			return;
 		}
 
-		static void MakeWithdraw(Customer customer) //Realizar saque
+		static void MakeWithdraw(Customer customer, float flag) //Realizar saque
 		{
 			if (VerifyCustomer(customer))
 			{
-				Console.WriteLine("Qual valor você deseja Sacar?");
-				long value = long.Parse(Console.ReadLine());
-				long aux = customer.account.Balance - value;
-
-				if (customer.account.Balance < value || customer.account.Balance == 0 || aux < 0)
-					Console.WriteLine("Saldo insuficiente!!!");
-				else
+				if (flag == 0)
 				{
-					customer.account.Balance -= value;
-					Console.Clear();
-					Console.WriteLine("Saque realizado com sucesso!!!!");
+					Console.WriteLine("Qual valor você deseja Sacar?");
+					float value = float.Parse(Console.ReadLine());
+
+					if (VerifyBalance(customer, value))
+					{
+						customer.account.Balance -= value;
+						Console.Clear();
+						Console.WriteLine("Saque realizado com sucesso!!!!");
+					}
+				}
+				else if (flag > 0)
+				{
+					if (VerifyBalance(customer, flag))
+						customer.account.Balance -= flag;
 				}
 			}
 
@@ -153,8 +183,44 @@ namespace excContaBancaria
 		{
 			if (VerifyCustomer(customer))
 			{
+				Console.WriteLine("Cliente: {0}", customer.Name.ToString());
+				Console.WriteLine("Saldo da conta: R$: {0}\n\n", customer.account.Balance.ToString());		
+			}
+
+			return;
+		}
+
+		static void BankTransfer(Customer customer, Customer baseCustomer)
+		{
+			Console.WriteLine("Conta base para realizar a transferência");
+			Console.WriteLine(baseCustomer.ToString());
+			Console.WriteLine("\n>>>Informações da conta que receberah a tranferencia<<<");
+			Console.Write("Informe a agencia: ");
+			int ag = int.Parse(Console.ReadLine());
+			Console.Write("Informe o mumero: ");
+			int num = int.Parse(Console.ReadLine());
+
+			if (baseCustomer.account.Agency == ag && baseCustomer.account.Number == num)
+			{
+				if (VerifyCustomer(customer))
+				{
+
+					Console.WriteLine("Qual o valor você deseja transferir?");
+					float value = float.Parse(Console.ReadLine());
+					MakeWithdraw(customer, value);
+					MakeDeposit(baseCustomer, value);
+
+					Console.Clear();
+					Console.WriteLine("Transferência realizada com sucesso!!!!");
+					PrintBalance(baseCustomer);
+					PrintBalance(customer);
+
+				}
+			}
+			else
+			{
 				Console.Clear();
-				Console.WriteLine("Saldo da conta: {0}\n\n", customer.account.Balance.ToString());		
+				Console.WriteLine("As Informações da conta que recebera a transferencia estavam erradas!!!!\nTente novamente....\n");
 			}
 
 			return;
