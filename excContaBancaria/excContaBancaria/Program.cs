@@ -10,11 +10,15 @@ namespace excContaBancaria
 	{
 		static void Main(string[] args)
 		{
-			Customer baseCustomer = new Customer { Cpf= "11111", Name="Marcelo", 
-							address= new Address { PublicArea="Rua Gilberto primeiro", Number="222A", Neighborhood="Bairro da turma", ZipCode=1234567}, 
-							account= new Account { Agency= 0009, Number= 919293, Balance=10000}};
+			Customer baseCustomer = new Customer
+			{
+				Cpf = "11111",
+				Name = "Marcelo",
+				address = new Address { PublicArea = "Rua Gilberto primeiro", Number = "222A", Neighborhood = "Bairro da turma", ZipCode = 1234567 },
+				account = new Account { Agency = 0009, Number = 919293, Balance = 10000 }
+			};
 
-			Customer customer = new Customer { address= new Address(), account= new Account() };
+			Customer customer = new Customer { address = new Address(), account = new Account() };
 
 			int op;
 
@@ -29,6 +33,9 @@ namespace excContaBancaria
 						break;
 					case 2:
 						makeDeposit(customer);
+						break;
+					case 3:
+						makeWithdraw(customer);
 						break;
 				}
 			} while (op != 0);
@@ -53,7 +60,7 @@ namespace excContaBancaria
 			return op;
 		}
 
-		static void RegisterCustomerAndAccount(Customer customer) 
+		static void RegisterCustomerAndAccount(Customer customer)
 		{
 			Console.WriteLine("\nInserindo dados do cliente:");
 			Console.Write("Informe o Cpf: ");
@@ -74,7 +81,7 @@ namespace excContaBancaria
 			Console.Write("Informe o numero da sua conta: ");
 			int accNumber = int.Parse(Console.ReadLine());
 
-			
+
 			customer.Cpf = cpf;
 			customer.Name = name;
 			customer.address.PublicArea = publicArea;
@@ -90,9 +97,21 @@ namespace excContaBancaria
 			return;
 		}
 
-		static void makeDeposit(Customer customer)
+		static bool VerifyCustomer(Customer customer)
 		{
 			if (customer.Cpf != null)
+				return true;
+			else
+			{
+				Console.Clear();
+				Console.WriteLine("Não existe cliente cadastrado!!!!");
+			}
+			return false;
+		}
+
+		static void makeDeposit(Customer customer)
+		{
+			if (VerifyCustomer(customer))
 			{
 				Console.WriteLine("Qual o valor você deseja depositar?");
 				long value = long.Parse(Console.ReadLine());
@@ -102,12 +121,28 @@ namespace excContaBancaria
 				Console.Clear();
 				Console.WriteLine("Depósito realizado com sucesso!!!!");
 			}
-			else
+
+			return;
+		}
+
+		static void makeWithdraw(Customer customer) //Realizar saque
+		{
+			if (VerifyCustomer(customer))
 			{
-				Console.Clear();
-				Console.WriteLine("Não existe cliente cadastrado!!!!");
+				Console.WriteLine("Qual valor você deseja Sacar?");
+				long value = long.Parse(Console.ReadLine());
+				long aux = customer.account.Balance - value;
+
+				if (customer.account.Balance < value || customer.account.Balance == 0 || aux < 0)
+					Console.WriteLine("Saldo insuficiente!!!");
+				else
+				{
+					customer.account.Balance -= value;
+					Console.Clear();
+					Console.WriteLine("Saque realizado com sucesso!!!!");
+				}
 			}
-				
+
 			return;
 		}
 	}
