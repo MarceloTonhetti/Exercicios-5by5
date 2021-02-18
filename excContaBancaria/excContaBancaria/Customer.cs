@@ -14,5 +14,12 @@ namespace excContaBancaria
 
 		public Account account { get; set; }
 
+		public override string ToString()
+		{
+			return
+			"\nNome: "+ Name+
+			"\nAgencia: " +account.Agency+ ", Numero: " +account.Number+ ", Saldo: R$: "+ account.Balance+
+			"\nTambém aceito Pix...";
+		}
 	}
 }
