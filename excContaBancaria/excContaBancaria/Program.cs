@@ -32,10 +32,13 @@ namespace excContaBancaria
 						RegisterCustomerAndAccount(customer);
 						break;
 					case 2:
-						makeDeposit(customer);
+						MakeDeposit(customer);
 						break;
 					case 3:
-						makeWithdraw(customer);
+						MakeWithdraw(customer);
+						break;
+					case 5:
+						PrintBalance(customer);
 						break;
 				}
 			} while (op != 0);
@@ -109,7 +112,7 @@ namespace excContaBancaria
 			return false;
 		}
 
-		static void makeDeposit(Customer customer)
+		static void MakeDeposit(Customer customer)
 		{
 			if (VerifyCustomer(customer))
 			{
@@ -125,7 +128,7 @@ namespace excContaBancaria
 			return;
 		}
 
-		static void makeWithdraw(Customer customer) //Realizar saque
+		static void MakeWithdraw(Customer customer) //Realizar saque
 		{
 			if (VerifyCustomer(customer))
 			{
@@ -141,6 +144,17 @@ namespace excContaBancaria
 					Console.Clear();
 					Console.WriteLine("Saque realizado com sucesso!!!!");
 				}
+			}
+
+			return;
+		}
+
+		static void PrintBalance(Customer customer)
+		{
+			if (VerifyCustomer(customer))
+			{
+				Console.Clear();
+				Console.WriteLine("Saldo da conta: {0}\n\n", customer.account.Balance.ToString());		
 			}
 
 			return;
