@@ -14,7 +14,7 @@ namespace excContaBancaria
 							address= new Address { PublicArea="Rua Gilberto primeiro", Number="222A", Neighborhood="Bairro da turma", ZipCode=1234567}, 
 							account= new Account { Agency= 0009, Number= 919293, Balance=10000}};
 
-			Customer customer;
+			Customer customer = new Customer { address= new Address(), account= new Account() };
 
 			int op;
 
@@ -25,7 +25,10 @@ namespace excContaBancaria
 				switch (op)
 				{
 					case 1:
-						customer = RegisterCustomerAndAccount();
+						RegisterCustomerAndAccount(customer);
+						break;
+					case 2:
+						makeDeposit(customer);
 						break;
 				}
 			} while (op != 0);
@@ -50,7 +53,7 @@ namespace excContaBancaria
 			return op;
 		}
 
-		static Customer RegisterCustomerAndAccount() 
+		static void RegisterCustomerAndAccount(Customer customer) 
 		{
 			Console.WriteLine("\nInserindo dados do cliente:");
 			Console.Write("Informe o Cpf: ");
@@ -71,16 +74,41 @@ namespace excContaBancaria
 			Console.Write("Informe o numero da sua conta: ");
 			int accNumber = int.Parse(Console.ReadLine());
 
-			Customer customer = new Customer
-			{		Cpf = cpf, Name = name,
-					address = new Address { PublicArea = publicArea, Number = number, Neighborhood = neighborhood, ZipCode = zipCode },
-					account = new Account { Agency = agency, Number = accNumber}
-			};
+			
+			customer.Cpf = cpf;
+			customer.Name = name;
+			customer.address.PublicArea = publicArea;
+			customer.address.Number = number;
+			customer.address.Neighborhood = neighborhood;
+			customer.address.ZipCode = zipCode;
+			customer.account.Agency = agency;
+			customer.account.Number = accNumber;
 
 			Console.Clear();
 			Console.WriteLine("Cliente e conta cadastrados com sucesso!!!\n");
 
-			return customer;
+			return;
+		}
+
+		static void makeDeposit(Customer customer)
+		{
+			if (customer.Cpf != null)
+			{
+				Console.WriteLine("Qual o valor você deseja depositar?");
+				long value = long.Parse(Console.ReadLine());
+
+				customer.account.Balance += value;
+
+				Console.Clear();
+				Console.WriteLine("Depósito realizado com sucesso!!!!");
+			}
+			else
+			{
+				Console.Clear();
+				Console.WriteLine("Não existe cliente cadastrado!!!!");
+			}
+				
+			return;
 		}
 	}
 }
