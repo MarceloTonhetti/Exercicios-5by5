@@ -11,18 +11,6 @@ namespace PPilha_Dinamica_Simplesmente_Encadeada
     {
         static void Main(string[] args)
         {
-            /*
-                1-inserir - ok
-                2-remover - ok
-                3-imprimir - ok
-                4-retornar quantidade de livros - ok
-                5-Buscar livros pelo nome
-                0-sair - ok
-
-                -contar quantos livros tem (retornar a quantidade de livros da pilha)
-                -Busca pelo titulo do livro 
-            */
-
             int opMenu;
 
             Pilha_Dinamica_Livro minha_pilha = new Pilha_Dinamica_Livro { Topo = null };
@@ -51,20 +39,6 @@ namespace PPilha_Dinamica_Simplesmente_Encadeada
             }while(opMenu != 0);
 
 
-
-          /*
-           * minha_pilha.Imprimir();
-            Console.ReadKey();
-
-
-            minha_pilha.Imprimir();
-
-            minha_pilha.pop();
-            minha_pilha.Imprimir();
-            minha_pilha.pop();
-            minha_pilha.Imprimir();
-            minha_pilha.pop();*/
-
             Console.ReadKey();
         }
 
@@ -89,8 +63,11 @@ namespace PPilha_Dinamica_Simplesmente_Encadeada
 
         static void InserirLivro(Pilha_Dinamica_Livro minha_pilha)
         {
+            Console.Write("Informe o Titulo: ");
             string t = Console.ReadLine();
+            Console.Write("Informe o Autor: ");
             string a = Console.ReadLine();
+            Console.Write("Informe o Isbn: ");
             int i = int.Parse(Console.ReadLine());
             
             minha_pilha.Push(new Livro { Titulo = t, Autor = a, Isbn = i });
